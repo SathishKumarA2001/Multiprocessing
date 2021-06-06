@@ -1,15 +1,22 @@
 import multiprocessing
 
-output = []
+def cube(list,result,value):
+    for rdx,num in enumerate(list):
+        result[rdx] = num * num * num
+        
+    value.value = sum(result)
 
-def cube(list):
-    for l in list:
-        output.append(l*l*l)
-    print("The result of Process 1 : {}".format(output))
+    print("Process 1 result : {}".format(result[:]))
+    print("Process 1 sum_cube : {}".format(value.value))
 
 if __name__ == '__main__':
     list = [1,2,3,4]
-    process1 = multiprocessing.Process(target=cube,args=(list,))
+    result = multiprocessing.Array('i',4)
+    value = multiprocessing.Value('i')
+
+    process1 = multiprocessing.Process(target=cube,args=(list,result,value))
     process1.start()
     process1.join()
-    print("The result of main : {}".format(output))
+    print("The result of main : {}".format(result[:]))
+    print("The value of main : {}".format(value.value))
+    
